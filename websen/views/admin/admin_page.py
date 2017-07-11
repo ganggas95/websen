@@ -324,7 +324,6 @@ def admin_pegawai_edit(pegawai_id):
                                                                 jadwal=jadwal,
                                                                 breadcumbs=breadcumbs)
     nama_pegawai = request.form['nama_pegawai']
-    nip_pegawai = request.form['nip']
     tempat_lahir = request.form['tempat_lahir']
     tanggal_lahir = request.form['tanggal_lahir']
     jabatan = request.form['jabatan']
@@ -332,12 +331,6 @@ def admin_pegawai_edit(pegawai_id):
     alamat = request.form['alamat']
     if nama_pegawai is None or nama_pegawai == "":
         flash('Nama pegawai tidak boleh kosong', category='warning')
-        return redirect("/admin/data/pegawai/"+str(pegawai_id)+"/edit")
-    if nip_pegawai is None or nip_pegawai == "":
-        flash('NIP pegawai tidak boleh kosong',category='warning')
-        return redirect("/admin/data/pegawai/"+str(pegawai_id)+"/edit")
-    if not check_pegawai_nip(nip_pegawai):
-        flash('NIP pegawai sudah ada. Coba yang lain!!',category='warning')
         return redirect("/admin/data/pegawai/"+str(pegawai_id)+"/edit")
     if tempat_lahir is None or tempat_lahir == "":
         flash('Tempat lahir pegawai tidak boleh kosong',category='warning')
@@ -351,10 +344,9 @@ def admin_pegawai_edit(pegawai_id):
     if jadwal is None or int(jadwal) == 0:
         flash('Jabatan pegawai tidak boleh kosong', category='warning')
         return redirect("/admin/data/pegawai/"+str(pegawai_id)+"/edit")
-    pegawai.nama = nama_pegawai
-    pegawai.nip = nip_pegawai
+    pegawai.nama = str(nama_pegawai).capitalize()
     pegawai.tanggal_lahir = tanggal_lahir
-    pegawai.tempat_lahir = tempat_lahir
+    pegawai.tempat_lahir = str(tempat_lahir).capitalize()
     jbtn = Jabatan.query.get(jabatan)
     jdwl = Jadwal.query.get(jadwal)
     if jbtn is None:
@@ -703,9 +695,10 @@ def change_foto(pegawai_id):
         foto_src = str(pegawai.foto).split(".")
         fotos = (foto_src[0]).split("/")
         fotoToDel = fotos[len(fotos)-1]
-        os.remove(os.path.join(app.config['UPLOAD_FOLDER']+fotoToDel+"."+foto_src[1]))
-        with open(app.config['UPLOAD_FOLDER'] + filename, "wb") as fh:
-            fh.write(base64.b64decode(img_data))
+        if fotoToDel:
+            os.remove(os.path.join(app.config['UPLOAD_FOLDER']+fotoToDel+"."+foto_src[1]))
+            with open(app.config['UPLOAD_FOLDER'] + filename, "wb") as fh:
+                fh.write(base64.b64decode(img_data))
         
         pegawai.foto = "/static/uploads/profile/"+filename
         db.session.add(pegawai)
@@ -727,41 +720,27 @@ def change_username(username, user):
             return False, "Gagal mengubah username"
     else:
         return False, "Gagal mengubah username"
-# @login_required
-# @requires_roles("admin")
-# def download_absens():
-#     absens = None
-#     bulan = None
-#     tanggal = None
-#     if request.args.get("bulan"):
-#         date = request.args.get('bulan')
-#         bulan = date
-#         absens = Absen.query.filter(Absen.tanggal.like("%"+bulan+"%")).all()
-#     elif request.args.get("tanggal"):
-#         date = request.args.get('tanggal')
-#         tanggal = date
-#         absens = Absen.query.filter(Absen.tanggal.like("%"+date+"%")).all()
-#     else:
-#         absens = Absen.query.order_by(desc(Absen.tanggal)).all()
-#     filename = uuid.uuid4()
-#     out = output(str(filename), absens)
-#     respo = Response()
-#     respo.set_data(out)
-#     return respo
 
-# def output(filename, absens):
-#     from openpyxl import Workbook
-#     from openpyxl.chart import Series, Reference, BubbleChart
-
-#     wb = Workbook()
-#     ws = wb.active
-#     rows = [("Nama Pegawai", "NIP", "Absen Masuk", "Absen Keluar", "Tanggal")]
-#     for absen in absens:
-#         data = (absen.pegawai.nama, absen.pegawai.nip, absen.masuk, absen.keluar, absen.tanggal)
-#         rows.append(data)
-#     for row in rows:
-#         ws.append(row)
-    
-#     wb.save(app.root_path+os.path.sep+"data"+os.path.sep+str(filename)+".xlsx")
-#     with open(app.root_path+os.path.sep+"data"+os.path.sep+str(filename)+".xlsx") as fil:
-#         return fil
+@login_required
+@requires_roles("admin")
+def download_absens():
+    absens = None
+    bulan = None
+    tanggal = None
+    title = None
+    subtitle = None
+    if request.args.get("bulan"):
+        title = "Laporan Bulanan"
+        date = request.args.get('bulan')
+        bulan = date
+        subtitle = "Bulan : "+date
+        absens = Absen.query.filter(Absen.tanggal.like("%"+bulan+"%")).all()
+    elif request.args.get("tanggal"):
+        date = request.args.get('tanggal')
+        title = "Laporan Harian"
+        tanggal = date
+        subtitle = "Tanggal : "+tanggal
+        absens = Absen.query.filter(Absen.tanggal.like("%"+date+"%")).all()
+    else:
+        absens = Absen.query.order_by(desc(Absen.tanggal)).all()
+    return render_template("admin/report.html", absens=absens, title=title, subtitle=subtitle)

@@ -23,7 +23,7 @@
                                 </div>
                                 <!--/.col-->
                                 <div class="col-sm-7 hidden-sm-down">
-                                    <!--<a class="btn btn-primary pull-right btn-export"><i class="fa fa-upload" aria-hidden="true"></i> Export</a>-->
+                                    <button class="btn btn-primary pull-right btn-export"><i class="fa fa-upload" aria-hidden="true"></i> Export</button>
                                     <form name="form-select-date" method="GET" class="pull-right" style="margin-right:10px;">
                                         <div class="form-group">
                                             <input type="date" class="form-control" name="tanggal" id="tanggal" placeholder="Tanggal" {%if tanggal%}value="{{tanggal}}"{%endif%}>
@@ -34,10 +34,6 @@
                                             <input type="month" class="form-control" name="bulan" id="bulan" placeholder="Bulan" {%if bulan%}value="{{bulan}}"{%endif%}>
                                         </div>
                                     </form>
-                                    <!--
-                                    <form name="form-export" method="GET" style="display:none;">
-                                        
-                                    </form>-->
                                 </div>
                                 <!--/.col-->
                             </div>
@@ -93,25 +89,22 @@
         $('#tanggal').change(function(){
             $('form[name="form-select-date"]').submit();
         });
-        /*
+        
         var param = "";
-        $(document).ready(function(){
-            param = ((location.href).toString()).split("?")[1];
-        });
         $('.btn-export').click(function(){
-            var url = "";
-            if (typeof(url)=="undefined"){
-                url = "/admin/data/absen/export"
-                $('form[name="form-export"]').prop("action", url);
+            var param = location.search;
+            var paramBulan = param.split("?bulan=");
+            var paramTanggal = param.split("?tanggal=")
+            if (paramBulan.length>1){
+                url = "/admin/data/absen/print?bulan="+paramBulan[1]
+            }else if(paramTanggal.length>1){
+                url = "/admin/data/absen/print?tanggal="+paramTanggal[1];
             }else{
-                url = "/admin/data/absen/export?"+param;
-                $('form[name="form-export"]').prop("action", url);
+                url = "/admin/data/absen/print";
             }
-            setTimeout(function(){
-                $('form[name="form-export"]').submit();
-            }, 5000);
+            location.href = url;
         });
-        */
+        
     </script>
 
 </body>

@@ -69,8 +69,8 @@ url_mapper("/admin/profile/foto/<int:pegawai_id>/change",
 url_mapper("/admin/profile/password/change", 
                 "views.admin.admin_page.admin_ganti_password", methods=["POST"])
 
-# url_mapper("/admin/data/absen/export", 
-#                 "views.admin.admin_page.download_absens", methods=["GET"])
+url_mapper("/admin/data/absen/print", 
+                "views.admin.admin_page.download_absens", methods=["GET"])
 
 url_mapper("/staff", "views.staff.staff_page.staff_index", methods=['GET'])
             

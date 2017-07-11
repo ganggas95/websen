@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{title}}</title>
+	<link href="/static/vendor/pace/themes/blue/pace-theme-loading-bar.css" rel="stylesheet">
+	<script src="/static/vendor/jquery/dist/jquery.min.js"></script>
+	<script src="/static/vendor/tether/dist/js/tether.min.js"></script>
+	<script src="/static/vendor/pace/pace.min.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	<style type="text/css">
+		html, body{
+			font-family: 'Roboto', sans-serif;
+			background-image:url(/static/img/logo.png);
+			background-repeat: no-repeat;
+			background-attachment: fixed;
+			background-size: 220px;
+			background-origin: all;
+		}
+		.report-main{
+			background-color: #fff;
+			opacity: 0.9;
+			left: 2.5%;
+			right: 2.5%;
+			position: absolute;
+			border-left: solid 1px black;
+			border-right: solid 1px black;
+			height: 100%;
+			width: 95%;
+		}
+		.report-header{
+			margin-top: 20px;
+			margin-bottom: 20px;
+			border-bottom: solid 2px black;
+		}
+		.text-center{
+			text-align: center;
+		}
+		.text-right{
+			text-align: right;
+			padding-right: 10px;
+		}
+		.content{
+			padding-left: 20px;
+			padding-right: 20px;
+		}
+		table {
+			width: 100%;
+		    border-collapse: collapse;
+		}
+		th, td {
+		    border-bottom: 1px solid #ddd;
+    		text-align: left;
+		}
+		th{
+			height: 50px;
+			background: #4CAF50;
+			text-align: center;
+		}
+		td{
+			padding: 5px;
+		}
+		tr:nth-child(even) {background-color: #f2f2f2}
+
+		@media print {
+			html,body{
+				background-image:url(/static/img/logo.png);
+			}
+			th {
+				height: 30px;
+				font-size: 12px;
+			    background-color: #4CAF50 !important;
+			    -webkit-print-color-adjust: exact; 
+			}
+			tr{
+				font-size: 10px;
+			}
+		}
+
+		@media print {
+			 th {
+			    color: white !important;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="pace  pace-inactive"><div class="pace-progress" data-progress-text="100%" data-progress="99" style="transform: translate3d(100%, 0px, 0px);">
+        <div class="pace-progress-inner"></div>
+        </div>
+    <div class="pace-activity"></div></div>
+    
+    <div class="report-main"> 
+	<div class="report-header">
+		<h2 class="text-center">Absensi Pegawai Perpustakaan Daerah</h2>
+		<h3 class="text-center">Selong-Lombok Timur</h3>
+	</div>
+	<div class="report-content"> 
+	<h4 class="text-center">{{title}}</h4>
+	<p class="text-right">{{subtitle}}</p>
+	<br>
+	<div class="content">
+	
+	<table class="table">
+	    <thead>
+	        <tr>
+	            <th>No</th>
+	            <th>Nama</th>
+	            <th>Nip</th>
+	            <th>Masuk</th>
+	            <th>Keluar</th>
+	            <th>Tanggal</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	    	{%if absens|length > 0%}
+	    	{%for a in absens%}
+	        <tr>
+	            <td scope="row">{{loop.index}}</td>
+	            <td>{{a.pegawai.nama}}</td>
+	            <td>{{a.pegawai.nip}}</td>
+	            <td>{{a.masuk}}</td>
+	            <td>{{a.keluar}}</td>
+	            <td>{{a.tanggal}}</td>
+	        </tr>
+	        {%endfor%}
+			{%else%}
+			<tr>
+				<td colspan="6" class="text-center">Tidak ada data</td>
+			</tr>
+			{%endif%}
+	    </tbody>
+	</table>
+	
+	</div>
+	</div>
+	</div>
+</body>
+</html>

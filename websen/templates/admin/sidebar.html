@@ -24,11 +24,16 @@
             <li class="nav-item nav-dropdown">
                 <a class="nav-link" href="{{url_for('admin_users')}}"><i class="fa fa-users fa-fw" aria-hidden="true"></i> Users</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{url_for('admin_jadwal')}}"><i class="fa fa-gear fa-fw" aria-hidden="true"></i> Atur Jadwal</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{url_for('admin_jabatan')}}"><i class="fa fa-gear fa-fw" aria-hidden="true"></i> Atur Jabatan</a>
+            <li class="nav-item nav-dropdown">
+                <a class="nav-link nav-dropdown-toggle" href="#"><i class="fa fa-gear fa-fw" aria-hidden="true"></i> Pengaturan</a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('admin_jadwal')}}"><i class="fa fa-gear fa-fw" aria-hidden="true"></i> Atur Jadwal</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('admin_jabatan')}}"><i class="fa fa-gear fa-fw" aria-hidden="true"></i> Atur Jabatan</a>
+                    </li>
+                </ul>
             </li>
             <li class="divider"></li>
             {%endif%}
