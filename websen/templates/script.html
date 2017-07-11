@@ -1,0 +1,14 @@
+<script src="/static/vendor/jquery/dist/jquery.min.js"></script>
+<script src="/static/vendor/tether/dist/js/tether.min.js"></script>
+<script src="/static/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/static/vendor/datatables/js/jquery.dataTables.min.js"></script>
+<script src="/static/vendor/datatables/js/dataTables.bootstrap4.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery.time-to.min.js"></script>
+<script type="text/javascript" src="/static/js/toaster.min.js"></script>
+<script>
+    {% with messages = get_flashed_messages(with_categories=True,category_filter=["success", "error", "warning"]) %} {% if messages %}
+    $(document).ready(function(){
+            toastr.{{(messages[-1])[0]}}("{{(messages[-1])[1]}}");
+    })
+    {% endif %} {% endwith %}
+</script>

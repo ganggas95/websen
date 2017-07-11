@@ -1,0 +1,91 @@
+<!doctype html>
+
+<head>
+    {%include "staff/meta.html"%} {%include "admin/style.html"%} {%include "script.html"%}
+</head>
+
+<body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
+    {%include "admin/header.html"%}
+
+    <div class="app-body">
+        {%include "admin/sidebar.html"%}
+        <!-- Main content -->
+        <main class="main">
+            {%include 'admin/breadcumb.html'%}
+            <div class="container-fluid">
+                <div class="animated fadeIn">
+                    <div class="card">
+                        <div class="card-block">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <h4 class="card-title mb-0">Data Absen Ku</h4>
+                                    <div class="small text-muted">Perpusda Selong Lombok Timur</div>
+                                </div>
+                                <!--/.col-->
+                                <div class="col-sm-7 hidden-sm-down">
+                                    <form name="form-select-date" method="GET" class="pull-right" style="margin-right:10px;">
+                                        <div class="form-group">
+                                            <input type="date" class="form-control" name="tanggal" id="tanggal" placeholder="Tanggal" {%if tanggal%}value="{{tanggal}}"{%endif%}>
+                                        </div>
+                                    </form>
+                                    <form name="form-select" method="GET" class="pull-right" style="margin-right:10px;" >
+                                        <div class="form-group">
+                                            <input type="month" class="form-control" name="bulan" id="bulan" placeholder="Bulan" {%if bulan%}value="{{bulan}}"{%endif%}>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!--/.col-->
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nama Pegawai</th>
+                                            <th>NIP Pegawai</th>
+                                            <th>Absen Masuk</th>
+                                            <th>Absen Keluar</th>
+                                            <th>Tanggal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {%for a in absens%}
+                                        <tr>
+                                            <td>{{loop.index}}</td>
+                                            <td>{{a.pegawai.nama}}</td>
+                                            <td>{{a.pegawai.nip}}</td>
+                                            <td>{%if a.masuk%}Ya{%else%}Tidak{%endif%}</td>
+                                            <td>{%if a.keluar%}Ya{%else%}Tidak{%endif%}</td>
+                                            <td>{{a.tanggal}}</td>
+                                        </tr>
+                                        {%endfor%}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--/.card-->
+            </div>
+    </div>
+    <!-- /.conainer-fluid -->
+    </main>
+    </div>
+    {%include "admin/footer.html"%}
+    </script>
+    <script src="/static/js/app.js"></script>
+    <script>
+        $(".table").DataTable();
+        $('#bulan').change(function(){
+            $('form[name="form-select"]').submit();
+        })
+        $('#tanggal').change(function(){
+            $('form[name="form-select-date"]').submit();
+        })
+    </script>
+
+</body>
+
+</html>

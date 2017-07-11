@@ -1,0 +1,57 @@
+<!doctype html>
+
+<head>
+    {%include "admin/meta.html"%} {%include "admin/style.html"%} {%include "script.html"%}
+</head>
+
+<body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
+    {%include "admin/header.html"%}
+
+    <div class="app-body">
+        {%include "admin/sidebar.html"%}
+        <!-- Main content -->
+        <main class="main">
+            {%include 'admin/breadcumb.html'%}
+            <div class="container-fluid">
+                <div class="animated fadeIn">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <form method="POST">
+                                <div class="card-header">
+                                    <strong>Edit Jabatan</strong>
+                                </div>
+                                <div class="card-block">
+                                    {% with messages = get_flashed_messages() %}
+                                    {% if messages %}
+                                   <div class="alert alert-warning" role="alert">
+                                       <strong>{{ messages[-1]}}</strong>
+                                   </div>
+                                    {% endif %}
+                                    {% endwith %}
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label for="name">Nama Jabatan</label>
+                                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter jabatan name" required value="{{jabatan.nama}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <a class="btn btn-danger" href="{{url_for('admin_jabatan')}}"><i class="fa fa-arrow-left fa-fw" aria-hidden="true"></i> Cancel</a>
+                                    <button class="btn btn-primary pull-right" type="submit"><i class="fa fa-save fa-fw" aria-hidden="true"></i> Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!--/.card-->
+                </div>
+            </div>
+            <!-- /.conainer-fluid -->
+        </main>
+    </div>
+    {%include "admin/footer.html"%}
+    <script src="/static/js/app.js"></script>
+</body>
+
+</html>

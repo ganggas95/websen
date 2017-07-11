@@ -1,0 +1,32 @@
+<!doctype html>
+<head>
+    {%include "staff/meta.html"%}
+    {%include "admin/style.html"%}
+    {%include "script.html"%}
+</head>
+
+<body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
+    {%include "admin/header.html"%}
+
+    <div class="app-body">
+        {%include "admin/sidebar.html"%}
+        <!-- Main content -->
+        <main class="main">
+            
+            {%include 'admin/breadcumb.html'%}
+            <div class="container-fluid">
+                <div class="animated fadeIn">
+                    <div class="container-fluid">
+                        <div class="alert alert-info" role="alert">
+                            <h2>Selamat Datang, Perpustakaan Daerah Selong (PERPUSDA) Selong</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.conainer-fluid -->
+        </main>
+    </div>
+    {%include "admin/footer.html"%}
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

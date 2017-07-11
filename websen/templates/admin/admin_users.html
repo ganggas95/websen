@@ -1,0 +1,93 @@
+<!doctype html>
+
+<head>
+    {%include "admin/meta.html"%} {%include "admin/style.html"%} {%include "script.html"%}
+</head>
+
+<body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
+    {%include "admin/header.html"%}
+
+    <div class="app-body">
+        {%include "admin/sidebar.html"%}
+        <!-- Main content -->
+        <main class="main">
+            {%include 'admin/breadcumb.html'%}
+            <div class="container-fluid">
+                <div class="animated fadeIn">
+                    <div class="card">
+                        <div class="card-block">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <h4 class="card-title mb-0">Data User</h4>
+                                    <div class="small text-muted">Perpusda Selong Lombok Timur</div>
+                                </div>
+                                <!--/.col-->
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Username</th>
+                                            <th>Status</th>
+                                            <th>Buat Pada</th>
+                                            <th>Update Pada</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {%for user in users%}
+                                        <tr>
+
+                                            <td>{{loop.index}}</td>
+                                            <td>{{user.username}}</td>
+                                            <td>
+                                                <div class="form-check">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" data-pk="{{user.id}}" name="active" id="active" onchange="changeActve(this)" {%if user.active%} checked value="true" {%else%} value="false" {%endif%} aria-label="Text for screen reader">
+                                                      </label>
+                                                </div>
+                                            </td>
+                                            <td>{{user.create_at}}</td>
+                                            <td>{{user.update_at}}</td>
+                                        </tr>
+                                        {%endfor%}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--/.card-->
+            </div>
+            <!-- /.conainer-fluid -->
+        </main>
+    </div>
+    {%include "admin/footer.html"%}
+    </script>
+    <script src="/static/js/app.js"></script>
+    <script>
+        $(".table").DataTable();
+        function changeActve(element) {
+            var data = {
+                "id": $(element).data('pk'),
+                "active": $(element).val()
+            }
+            $.ajax({
+                url : "{{url_for('admin_users')}}",
+                method : 'POST',
+                data : JSON.stringify(data),
+                contentType : "application/json",
+                cache: false,
+                processData: false,
+                success: function(res){
+                    location.reload();
+                }
+            })
+        }
+    </script>
+
+</body>
+
+</html>

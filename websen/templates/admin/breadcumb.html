@@ -1,0 +1,7 @@
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+    
+    {%for breadcumb in breadcumbs%}
+    <li class="breadcrumb-item {%if breadcumb.active%} active {%endif%}"><a {%if breadcumb.url%}href="{{breadcumb.url}}"{%endif%}>{{breadcumb.name}}</a></li>
+    {%endfor%}
+</ol>

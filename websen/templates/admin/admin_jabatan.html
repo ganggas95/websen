@@ -1,0 +1,122 @@
+<!doctype html>
+
+<head>
+    {%include "admin/meta.html"%} {%include "admin/style.html"%} {%include "script.html"%}
+</head>
+
+<body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
+    {%include "admin/header.html"%}
+
+    <div class="app-body">
+        {%include "admin/sidebar.html"%}
+        <!-- Main content -->
+        <main class="main">
+            {%include 'admin/breadcumb.html'%}
+            <div class="container-fluid">
+                <div class="animated fadeIn">
+                    <div class="card">
+                        <div class="card-block">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <h4 class="card-title mb-0">Data Jabatan Pegawai</h4>
+                                    <div class="small text-muted">Perpusda Selong Lombok Timur</div>
+                                </div>
+                                <!--/.col-->
+                                <div class="col-sm-7 hidden-sm-down">
+                                    <a class="btn btn-outline-secondary pull-right" href="{{url_for('admin_jabatan_new')}}"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                                </div>
+                                <!--/.col-->
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nama Jabtan</th>
+                                            <th>Buat Pada</th>
+                                            <th>Update Pada</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {%for j in jabatan%}
+                                        <tr>
+                                            <td>{{loop.index}}</td>
+                                            <td>{{j.nama}}</td>
+                                            <td>{{j.create_at}}</td>
+                                            <td>{{j.update_at}}</td>
+                                            <td class=" text-center">
+                                                <div class="btn-group btn-group-sm">
+                                                    <a class="btn btn-primary" href="/admin/data/jabatan/{{j.id}}/edit"><i class="fa fa-pencil fa-fw" aria-hidden="true"></i></a>
+                                                    <a class="btn btn-danger btn-delete" data-pk="{{j.id}}" data-toggle="modal" data-target="#modelDelete"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {%endfor%}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--/.card-->
+            </div>
+            <!-- /.conainer-fluid -->
+        </main>
+        
+        <!-- Modal -->
+        <div class="modal modal-warning fade" id="modelDelete" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                        <h4 class="modal-title" id="modelTitleId">Hapus Jabatan</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Yakin akan menghapus data ini???</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
+                        <button type="button" class="btn btn-primary btn-ya">Ya</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {%include "admin/footer.html"%}
+    <script src="/static/js/app.js"></script>
+    <script>
+        $(".table").DataTable();
+        $(".btn-delete").click(function(){
+            var id = $(this).data('pk');
+            $("#modelDelete").data('pk', id);
+        });
+        $("#modelDelete").on("show.bs.modal", function(){
+            var id = $(this).data('pk');
+            $(this).find(".btn-ya").data('pk', id);
+        })
+        $(".btn-ya").click(function(){
+            var id = $(this).data('pk');
+            $.ajax({
+                url:"/admin/data/jabatan/"+id+"/delete",
+                method : "DELETE",
+                cache : false,
+                processData : false,
+                contentType : "application/json",
+                success: function(res){
+                    window.location.reload();
+                },error: function(res){
+                    console.log(res)
+                }
+            })
+        })
+        
+    </script>
+
+</body>
+
+</html>

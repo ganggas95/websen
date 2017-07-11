@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="/static/img/favicon.png">
+    <title>Websen System : System Absensi Berbasis Web</title>
+    {%include "style.html"%} {%include "script.html"%}
+    <style>
+        body, html{
+                background-image: url('/static/img/bg2.jpg');
+                background-attachment: fixed;
+                background-size: cover;
+            }
+        .main-panel {
+            width: 400px;
+            padding: 8% 0 0;
+            margin: auto;
+        }
+        
+        .form {
+            position: relative;
+            z-index: 1;
+            background: #FFFFFF;
+            max-width: 400px;
+            margin: 0 auto 90px;
+            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+        }
+        
+        .form .card-content {
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="main-panel">
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="card form animated slideInRight">
+                        <div class="card-header">
+                            <h4 class="title">Login System</h4>
+                        </div>
+                        <div class="card-content">
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group label-floating">
+                                            <label class="control-label">Username</label>
+                                            <input type="text" class="form-control" name="username">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group label-floating">
+                                            <label class="control-label">Password</label>
+                                            <input type="password" class="form-control" name="password">
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary pull-right" formmethod="post"><i class="fa fa-sign-in fa-fw" aria-hidden="true"></i> Login</button>
+                                <div class="clearfix"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

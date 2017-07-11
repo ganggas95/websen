@@ -1,0 +1,191 @@
+<!doctype html>
+
+<head>
+    {%include "staff/meta.html"%} {%include "admin/style.html"%} {%include "script.html"%}
+</head>
+
+<body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
+    {%include "admin/header.html"%}
+
+    <div class="app-body">
+        {%include "admin/sidebar.html"%}
+        <!-- Main content -->
+        <main class="main">
+            {%include 'admin/breadcumb.html'%}
+            <div class="container-fluid">
+                <div class="animated fadeIn">
+                    <div class="card">
+                        <div class="card-block">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <h4 class="card-title mb-0">Profile Ku</h4>
+                                    <div class="small text-muted">Perpusda Selong Lombok Timur</div>
+                                </div>
+                                <!--/.col-->
+                            </div>
+                        </div>
+                        <div class="card-content row" style="padding-right:20px;">
+                            <div class="table-responsive col-sm-8">
+                                <table class="table table-stripped">
+                                    <tbody>
+                                        <tr>
+                                            <td>Nama</td>
+                                            <td>:</td>
+                                            <td>{{pegawai.nama}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>NIP</td>
+                                            <td>:</td>
+                                            <td>{{pegawai.nip}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tempat/Tanggal Lahir</td>
+                                            <td>:</td>
+                                            <td>{{pegawai.tempat_lahir}} , {{pegawai.tanggal_lahir}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Jabatan</td>
+                                            <td>:</td>
+                                            <td>{{pegawai.jabatan.nama}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Jadwal Piket</td>
+                                            <td>:</td>
+                                            <td>{{pegawai.jadwal.display_name}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Alamat</td>
+                                            <td>:</td>
+                                            <td>{{pegawai.alamat}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="e-change" style="padding:20px;">
+                                    <button class="btn btn-primary" data-target="#change-username" data-toggle="modal">Ganti Username</button>
+                                    <button class="btn btn-primary" data-target="#change-password" data-toggle="modal">Ganti Password</button>
+                                </div>
+                            </div>
+                            <div class="col-sm-4" align="center">
+                                <img class="img img-responsive img-thumbnail" src="{{pegawai.foto}}" style="height:280px;">
+                                <div class="text-center" style="padding:20px">
+                                    <button class="btn btn-primary" data-toggle="modal" data-target="#modelId">Ganti</button>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!--/.card-->
+            </div>
+            <!-- /.conainer-fluid -->
+        </main>
+
+        <!-- Modal -->
+        <div class="modal fade" id="modelId" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <img class="img img-responsive img-thumbnail img-preview" src="{{pegawai.foto}}" style="width:100%">
+                        <span class="text-muted">*Klik untuk mengganti</span>
+                        <input type="file" id="foto-profile" style="display: none;" accept=".png, .jpeg">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-primary btn-save-profile" data-pk="{{pegawai.id}}" disabled>Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="change-username" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+            aria-hidden="true">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <form method="POST">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" name="username" required id="username" placeholder="" value="{{pegawai.user.username}}">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="change-password" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+            aria-hidden="true">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <form method="POST" action="{{url_for('staff_ganti_password')}}">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="old-password">Password Lama</label>
+                                <input type="password" class="form-control" name="old_password" id="old_password" placeholder="" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="old-password">Password Baru</label>
+                                <input type="password" class="form-control" name="password_baru" id="password_baru" placeholder="" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="old-password">Password Konfirmasi</label>
+                                <input type="password" class="form-control" name="password_conf" id="password_conf" placeholder="" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {%include "admin/footer.html"%}
+    <script src="/static/js/app.js"></script>
+    <script>
+        $('.img-preview').click(function () {
+            $('#foto-profile').trigger('click');
+        });
+
+        $('#foto-profile').change(function () {
+            $(".btn-save-profile").attr('disabled', false);
+            var reader = new FileReader();
+            reader.onload = function () {
+                $('.img-preview').attr('src', reader.result);
+            }
+            reader.readAsDataURL(this.files[0]);
+        })
+
+        $(".btn-save-profile").click(function () {
+            var id = $(this).data('pk');
+            var source = $('.img-preview').attr('src');
+            var ext = (source.split(";base64,")[0]).split("data:image/")[1];
+            var data = source.split(";base64,")[1];
+            var dataTosend = {
+                "data": data,
+                "ext": ext
+            }
+
+            $.ajax({
+                method: "POST",
+                url: "/staff/profile/foto/" + id + "/change",
+                cache: false,
+                processData: false,
+                contentType: "application/json",
+                data: JSON.stringify(dataTosend),
+                success: function (res) {
+                    window.location.reload();
+                }, error: function (res) {
+                    console.log(res)
+                }
+            })
+
+        })
+    </script>
+</body>
+
+</html>

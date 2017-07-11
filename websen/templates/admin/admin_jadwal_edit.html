@@ -1,0 +1,83 @@
+<!doctype html>
+
+<head>
+    {%include "admin/meta.html"%} {%include "admin/style.html"%} {%include "script.html"%}
+</head>
+
+<body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
+    {%include "admin/header.html"%}
+
+    <div class="app-body">
+        {%include "admin/sidebar.html"%}
+        <!-- Main content -->
+        <main class="main">
+            {%include 'admin/breadcumb.html'%}
+            <div class="container-fluid">
+                <div class="animated fadeIn">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <form method="POST">
+                                <div class="card-header">
+                                    <strong>Edit Jadwal</strong>
+                                </div>
+                                <div class="card-block">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label for="name">Nama Jadwal</label>
+                                                <input type="text" class="form-control" id="name" name="name_jadwal" placeholder="Enter jadwal name" value="{{jadwal.nama}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="jam_masuk_start">Absen Masuk Mulai</label>
+                                                <input type="time" class="form-control" name="jam_masuk_start" id="jam_masuk_start" aria-describedby="help1" placeholder="" value="{{jadwal.jadwal_masuk_start}}">
+                                                <small id="help1" class="form-text text-muted">absen masuk mulai</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="jam_masuk_end">Absen Masuk Selesai</label>
+                                                <input type="time" class="form-control" name="jam_masuk_end" id="jam_masuk_end" aria-describedby="help2" placeholder="" value="{{jadwal.jadwal_masuk_end}}">
+                                                <small id="help2" class="form-text text-muted">absen masuk selesai</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="jam_keluar_start">Absen Keluar Mulai</label>
+                                                <input type="time" class="form-control" name="jam_keluar_start" id="jam_keluar_start" aria-describedby="help2" placeholder="" value="{{jadwal.jadwal_keluar_start}}">
+                                                <small id="help2" class="form-text text-muted">absen keluar mulai</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="jam_keluar_end">Absen Keluar Selesai</label>
+                                                <input type="time" class="form-control" name="jam_keluar_end" id="jam_keluar_end" aria-describedby="help2" placeholder="" value="{{jadwal.jadwal_keluar_end}}">
+                                                <small id="help2" class="form-text text-muted">absen keluar selesai</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="text-muted">* Semua waktu di input dalam mode 12 jam</p>
+                                </div>
+                                <div class="card-footer">
+                                    <a class="btn btn-danger" href="{{url_for('admin_jadwal')}}"><i class="fa fa-arrow-left fa-fw" aria-hidden="true"></i> Cancel</a>
+                                    <button class="btn btn-primary pull-right" type="submit"><i class="fa fa-save fa-fw" aria-hidden="true"></i> Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!--/.card-->
+                </div>
+            </div>
+            <!-- /.conainer-fluid -->
+        </main>
+    </div>
+    {%include "admin/footer.html"%}
+    <script src="/static/js/app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,110 @@
+<!doctype html>
+
+<head>
+    {%include "admin/meta.html"%} {%include "admin/style.html"%} {%include "script.html"%}
+</head>
+
+<body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
+    {%include "admin/header.html"%}
+
+    <div class="app-body">
+        {%include "admin/sidebar.html"%}
+        <!-- Main content -->
+        <main class="main">
+            {%include 'admin/breadcumb.html'%}
+            <div class="container-fluid">
+                <div class="animated fadeIn">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <form method="POST" enctype="multipart/form-data">
+                                <div class="card-header">
+                                    <strong>New Pegawai</strong>
+                                </div>
+                                <div class="card-block">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="nama_pegawai">Nama Pegawai</label>
+                                                <input type="text" class="form-control" required id="nama_pegawai" name="nama_pegawai" placeholder="Enter your name">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="nip">NIP Pegawai</label>
+                                                <input type="text" class="form-control" required id="nip" name="nip" placeholder="Enter your NIP">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="tempat_lahir">Tempat Lahir</label>
+                                                <input type="text" class="form-control" required id="tempat_lahir" name="tempat_lahir" placeholder="Enter your tempat lahir">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="tanggal_lahir">Tanggal Lahir</label>
+                                                <input type="date" class="form-control" required id="tanggal_lahir" name="tanggal_lahir" placeholder="Enter your tanggal lahir">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="jabatan">Jabatan</label>
+                                                <select class="form-control form-control-3" name="jabatan" id="jabatan" required>
+                                                    <option value="0">Pilih Jabatan</option>
+                                                    {%for j in jabatan%}
+                                                    <option value="{{j.id}}">{{j.nama}}</option>
+                                                    {%endfor%}
+                                                  </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="jadwal">Jadwal</label>
+                                                <select class="form-control form-control-3" name="jadwal" id="jadwal" required>
+                                                    <option value="0">Pilih Jadwal</option>
+                                                    {%for j in jadwal%}
+                                                    <option value="{{j.id}}">{{j.display_name}}</option>
+                                                    {%endfor%}
+                                                  </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label for="alamat">Alamat</label>
+                                                <textarea class="form-control form-control-3" name="alamat" id="alamat"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label for="files">Upload Foto</label>
+                                                <input type="file" class="form-control" required name="files" id="files" accept=".png,.jpeg">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <a class="btn btn-danger" href="{{url_for('admin_pegawai')}}"><i class="fa fa-arrow-left fa-fw" aria-hidden="true"></i> Cancel</a>
+                                    <button class="btn btn-primary pull-right" type="submit"><i class="fa fa-save fa-fw" aria-hidden="true"></i> Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!--/.card-->
+                </div>
+            </div>
+            <!-- /.conainer-fluid -->
+        </main>
+    </div>
+    {%include "admin/footer.html"%}
+    <script src="/static/js/app.js"></script>
+</body>
+
+</html>

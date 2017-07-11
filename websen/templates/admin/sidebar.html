@@ -1,0 +1,50 @@
+<div class="sidebar">
+    <nav class="sidebar-nav">
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" {%if current_user.is_admin()%}href="{{url_for('admin_index')}}"{%else%}href="{{url_for('staff_index')}}"{%endif%}><i class="icon-speedometer"></i> Dashboard</a>
+            </li>
+            {%if current_user.is_admin()%}
+            <li class="nav-title">
+                Menu Admin
+            </li>
+            
+            
+            <li class="nav-item nav-dropdown">
+                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-puzzle"></i> Data</a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('admin_pegawai')}}"><i class="icon-puzzle"></i> Data Pegawai</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for('admin_absen')}}"><i class="icon-puzzle"></i> Data Absen</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item nav-dropdown">
+                <a class="nav-link" href="{{url_for('admin_users')}}"><i class="fa fa-users fa-fw" aria-hidden="true"></i> Users</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{url_for('admin_jadwal')}}"><i class="fa fa-gear fa-fw" aria-hidden="true"></i> Atur Jadwal</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{url_for('admin_jabatan')}}"><i class="fa fa-gear fa-fw" aria-hidden="true"></i> Atur Jabatan</a>
+            </li>
+            <li class="divider"></li>
+            {%endif%}
+            {%if current_user.is_pegawai()%}
+            <li class="nav-title">
+                Menu Pegawai
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{url_for('staf_profile')}}"><i class="fa fa-id-card fa-fw" aria-hidden="true"></i> Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{url_for('staf_absen')}}"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> Absen</a>
+            </li>
+            <li class="divider"></li>
+            {%endif%}
+        </ul>
+
+    </nav>
+</div>

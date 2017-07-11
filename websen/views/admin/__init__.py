@@ -1,0 +1,1 @@
+from websen.views.admin import admin_page
