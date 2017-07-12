@@ -45,6 +45,8 @@ class Pegawai(db.Model):
     jadwal = db.relationship('Jadwal', backref=db.backref('jadwal_pegawai', lazy='dynamic'))
     user_id = db.Column("user_id", db.ForeignKey('users.id'))
     user = db.relationship('User', backref=db.backref('users_pegawai', lazy='dynamic'))
+    jumlah_masuk = 0
+    jumlah_keluar = 0
 
 class Absen(db.Model):
     __tablename__ = 'absen'

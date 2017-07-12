@@ -724,23 +724,68 @@ def change_username(username, user):
 @login_required
 @requires_roles("admin")
 def download_absens():
-    absens = None
+    data = []
     bulan = None
     tanggal = None
     title = None
     subtitle = None
+    tipe = None
+    absens = Absen.query.order_by(desc(Absen.tanggal)).all()
+    hari_kerja = None
+    hari_libur = None
+    jumlah_hari = None
+    pegawais = Pegawai.query.all()
     if request.args.get("bulan"):
         title = "Laporan Bulanan"
         date = request.args.get('bulan')
         bulan = date
         subtitle = "Bulan : "+date
         absens = Absen.query.filter(Absen.tanggal.like("%"+bulan+"%")).all()
+        tipe = "bulanan"
+        mount = get_weekend(date)
+        for absen in absens:
+            for p in pegawais:
+                if p.id == absen.pegawai.id:
+                    if absen.masuk:
+                        p.jumlah_masuk = p.jumlah_masuk+1
+                    if absen.keluar:
+                        p.jumlah_keluar = p.jumlah_keluar+1   
+        hari_kerja =  mount[1]
+        hari_libur = mount[0]-mount[1]
+        jumlah_hari = mount[0]
     elif request.args.get("tanggal"):
         date = request.args.get('tanggal')
         title = "Laporan Harian"
         tanggal = date
         subtitle = "Tanggal : "+tanggal
         absens = Absen.query.filter(Absen.tanggal.like("%"+date+"%")).all()
+        tipe = "harian"
     else:
-        absens = Absen.query.order_by(desc(Absen.tanggal)).all()
-    return render_template("admin/report.html", absens=absens, title=title, subtitle=subtitle)
+        absens = Absen.query.all()
+        tipe = "bulanan"
+        for absen in absens:
+            for p in pegawais:
+                if p.id == absen.pegawai.id:
+                    if absen.masuk:
+                        p.jumlah_masuk = p.jumlah_masuk+1
+                    if absen.keluar:
+                        p.jumlah_keluar = p.jumlah_keluar+1
+    
+    return render_template("admin/report.html", absens=absens, 
+                                                title=title, 
+                                                subtitle=subtitle, 
+                                                pegawais=pegawais, 
+                                                tipe=tipe,
+                                                hari_libur=hari_libur,
+                                                hari_kerja=hari_kerja,
+                                                jumlah_hari=jumlah_hari)
+from calendar import monthrange
+def get_weekend(date):
+    mount = monthrange(int(str(date).split("-")[0]),int(str(date).split("-")[1]))
+    start = datetime.date(int(str(date).split("-")[0]),int(str(date).split("-")[1]),1)
+    end = datetime.date(int(str(date).split("-")[0]),int(str(date).split("-")[1]),mount[1])
+    daydiff = end.weekday() - start.weekday()
+    days = ((end-start).days - daydiff) / 7 * 6 + min(daydiff,6) - (max(end.weekday() - 4, 0) % 6)
+    logging.warning(mount[0])
+    logging.warning(days)
+    return mount[1], int(days)+1

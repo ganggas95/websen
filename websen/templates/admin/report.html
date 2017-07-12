@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>{{title}}</title>
+	<title>{%if title %}{{title}}{%else%}Laporan Absensi{%endif%}</title>
 	<link href="/static/vendor/pace/themes/blue/pace-theme-loading-bar.css" rel="stylesheet">
 	<script src="/static/vendor/jquery/dist/jquery.min.js"></script>
 	<script src="/static/vendor/tether/dist/js/tether.min.js"></script>
@@ -15,6 +15,9 @@
 			background-attachment: fixed;
 			background-size: 220px;
 			background-origin: all;
+		}
+		.ket{
+			margin-bottom: 50px;
 		}
 		.report-main{
 			background-color: #fff;
@@ -50,6 +53,7 @@
 		th, td {
 		    border-bottom: 1px solid #ddd;
     		text-align: left;
+
 		}
 		th{
 			height: 50px;
@@ -57,7 +61,7 @@
 			text-align: center;
 		}
 		td{
-			padding: 5px;
+			padding: 10px;
 		}
 		tr:nth-child(even) {background-color: #f2f2f2}
 
@@ -95,8 +99,8 @@
 		<h3 class="text-center">Selong-Lombok Timur</h3>
 	</div>
 	<div class="report-content"> 
-	<h4 class="text-center">{{title}}</h4>
-	<p class="text-right">{{subtitle}}</p>
+	<h4 class="text-center">{%if title %}{{title}}{%else%}Laporan Absensi{%endif%}</h4>
+	<p class="text-right">{%if subtitle%}{{subtitle}}{%endif%}</p>
 	<br>
 	<div class="content">
 	
@@ -104,23 +108,24 @@
 	    <thead>
 	        <tr>
 	            <th>No</th>
-	            <th>Nama</th>
-	            <th>Nip</th>
+	            <th style="text-align: left;">Nama</th>
+	            <th style="text-align: left;">Nip</th>
 	            <th>Masuk</th>
 	            <th>Keluar</th>
-	            <th>Tanggal</th>
+	            {%if tipe == "harian"%}<th>Tanggal</th>{%endif%}
 	        </tr>
 	    </thead>
 	    <tbody>
+	    	{%if tipe == 'harian'%}
 	    	{%if absens|length > 0%}
 	    	{%for a in absens%}
 	        <tr>
-	            <td scope="row">{{loop.index}}</td>
+	            <td class="text-center">{{loop.index}}</td>
 	            <td>{{a.pegawai.nama}}</td>
 	            <td>{{a.pegawai.nip}}</td>
-	            <td>{{a.masuk}}</td>
-	            <td>{{a.keluar}}</td>
-	            <td>{{a.tanggal}}</td>
+	            <td class="text-center">{{a.masuk}}</td>
+	            <td class="text-center">{{a.keluar}}</td>
+	            {%if tipe == "harian"%}<td class="text-center">{{a.tanggal}}</td>{%endif%}
 	        </tr>
 	        {%endfor%}
 			{%else%}
@@ -128,9 +133,29 @@
 				<td colspan="6" class="text-center">Tidak ada data</td>
 			</tr>
 			{%endif%}
+			{%else%}
+	    	{%for pegawai in pegawais%}
+	        <tr>
+	            <td class="text-center">{{loop.index}}</td>
+	            <td>{{pegawai.nama}}</td>
+	            <td>{{pegawai.nip}}</td>
+	            <td class="text-center">{{pegawai.jumlah_masuk}}</td>
+	            <td class="text-center">{{pegawai.jumlah_keluar}}</td>
+	        </tr>
+	        {%endfor%}
+			{%endif%}
 	    </tbody>
 	</table>
-	
+	{%if tipe=='bulanan'%}
+		<div class="ket">
+			<p>Keterangan:</p>
+			<div style="margin-left:80px;">
+				<p>Jumlah Hari Kerja : {{hari_kerja}}</p>
+				<p>Jumlah Hari Libur : {{hari_libur}}</p>
+				<p>Jumlah Hari  : {{jumlah_hari}}</p>
+			</div>
+		</div>
+	{%endif%}
 	</div>
 	</div>
 	</div>
