@@ -4,10 +4,21 @@ from websen import app
 from websen.databases.models import db, User, Jabatan, Jadwal, Pegawai, Absen
 from datetime import timedelta
 import logging, os, string, random, hashlib, datetime
-from sqlalchemy import desc
+from sqlalchemy import desc,asc
 from werkzeug.utils import secure_filename
 from websen.views.admin.admin_page import requires_roles,Breadcumb, change_foto, change_password, change_username
-
+bulan = ["Januari", 
+            "Februari", 
+            "Maret", 
+            "April", 
+            "Mei", 
+            "Juni",
+            "Juli", 
+            "Agustus", 
+            "September", 
+            "Oktober", 
+            "November", 
+            "Desember"]
 @login_required
 @requires_roles('pegawai')
 def staff_index():
@@ -21,7 +32,51 @@ def staff_index():
         breadcumb = Breadcumb()
         breadcumb.name = url.capitalize()
         breadcumbs.append(breadcumb)
-    return render_template("staff/dashboard.html", pegawai=pegawai, breadcumbs=breadcumbs)
+    now = datetime.datetime.now()
+    month = ""
+    absens = None
+    data_masuk = []
+    data_keluar = []
+    jumlah_masuk = []
+    jumlah_keluar = []
+    absen_masuk = []
+    absen_keluar = []
+    for index in range(len(bulan)):
+        if index<9:
+            month = "0"+str(index+1)
+        else:
+            month = str(index+1)
+        absens = Absen.query.filter_by(pegawai_id=pegawai.id).filter(Absen.tanggal.like("%"+str(now.year)+"-"+month+"%")).all()
+        if len(absens)>0:
+            for absen in absens:
+                if absen.keluar:
+                    jumlah_keluar.append(1)
+                if absen.masuk:
+                    jumlah_masuk.append(1)
+            absen_keluar.append(len(jumlah_keluar))
+            absen_masuk.append(len(jumlah_masuk))
+        else:
+            absen_masuk.append(0)
+            absen_keluar.append(0)
+    data_keluar.append({
+        "label" : "Absen Keluar",
+        "backgroundColor" : "blue",
+        "borderColor" : "rgba(255,255,255,.55)",
+        "data" : absen_keluar
+    })
+    data_masuk.append({
+        "label" : "Absen Masuk",
+        "backgroundColor" : "blue",
+        "borderColor" : "rgba(255,255,255,.55)",
+        "data" : absen_masuk
+    })
+    date = str(now.year)+"-"+month
+    return render_template("staff/dashboard.html", pegawai=pegawai, 
+                                                    breadcumbs=breadcumbs,
+                                                    data_bulan=bulan[now.month-1]+"-"+str(now.year),
+                                                    bulan=bulan,
+                                                    data_masuk=data_masuk,
+                                                    data_keluar=data_keluar)
 
 @login_required
 @requires_roles('pegawai')
@@ -108,3 +163,12 @@ def staf_absen():
     breadcumbs[len(breadcumbs)-1].active = True
     return render_template("staff/absen.html", absens=absens,breadcumbs=breadcumbs)
 
+
+from calendar import monthrange
+def get_weekend(date):
+    mount = monthrange(int(str(date).split("-")[0]),int(str(date).split("-")[1]))
+    start = datetime.date(int(str(date).split("-")[0]),int(str(date).split("-")[1]),1)
+    end = datetime.date(int(str(date).split("-")[0]),int(str(date).split("-")[1]),mount[1])
+    daydiff = end.weekday() - start.weekday()
+    days = ((end-start).days - daydiff) / 7 * 6 + min(daydiff,6) - (max(end.weekday() - 4, 0) % 6)
+    return mount[1], int(days)+1

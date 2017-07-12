@@ -53,8 +53,8 @@ class Absen(db.Model):
     __table_args__ = {'extend_existing': True}
     pegawai_id = db.Column("pegawai_id", db.ForeignKey('pegawai.id'))
     pegawai = db.relationship('Pegawai', backref=db.backref('absen_pegawai', lazy='dynamic'))
-    
-
+    jumlah_masuk = 0
+    jumlah_keluar = 0
 # user = User(username="admin",password=hashlib.md5("admin".encode("ascii")).hexdigest())
 # db.session.add(user)
 # db.session.commit()

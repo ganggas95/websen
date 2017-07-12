@@ -77,6 +77,7 @@ def loader_user(user):
     u = User.query.get(user)
     if u:
         pegawai = Pegawai.query.filter_by(user_id=u.id).first()
+
         if pegawai:
             user_login = UserLogin()
             user_login.user_id = u.id
@@ -110,6 +111,11 @@ def admin_index():
 
 def admin_login():
     if request.method == 'GET':
+        if session.get('logged_in'):
+            pegawai = Pegawai.query.join(User, Jabatan).filter(User.username == session.get("username")).first()
+            if pegawai.jabatan.nama=="Administrator":
+                return redirect(url_for("admin_index"))
+            return redirect(url_for("staff_index"))
         return render_template("admin/login.html")
     username = request.form['username']
     password = request.form['password']
@@ -129,7 +135,7 @@ def admin_login():
                         user_login.set_role("pegawai")
                     user_login.active = bool(user.active)
                     user_login.username = user.username
-                    login_user(user)
+                    login_user(user_login)
                     flash("Selamat Datang {}".format(pegawai.nama), category='success')
                     if user_login.is_admin():
                         return redirect(url_for("admin_index"))
@@ -146,6 +152,7 @@ def admin_login():
 
 @login_required
 def admin_logout():
+    session['logged_in'] = False
     session.clear()
     logout_user()
     return redirect(url_for("admin_login"))
