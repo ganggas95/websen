@@ -111,11 +111,6 @@ def admin_index():
 
 def admin_login():
     if request.method == 'GET':
-        if session.get('logged_in'):
-            pegawai = Pegawai.query.join(User, Jabatan).filter(User.username == session.get("username")).first()
-            if pegawai.jabatan.nama=="Administrator":
-                return redirect(url_for("admin_index"))
-            return redirect(url_for("staff_index"))
         return render_template("admin/login.html")
     username = request.form['username']
     password = request.form['password']
