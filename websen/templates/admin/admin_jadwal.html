@@ -53,7 +53,7 @@
                                             <td>{{j.update_at}}</td>
                                             <td class=" text-center">
                                                 <div class="btn-group btn-group-sm">
-                                                    <a class="btn btn-primary" href="/admin/setting/jadwal/{{j.id}}/edit"><i class="fa fa-pencil fa-fw" aria-hidden="true"></i></a>
+                                                    <a class="btn btn-primary" href="{{url_for('admin_jadwal_edit', jadwal_id=j.id)}}"><i class="fa fa-pencil fa-fw" aria-hidden="true"></i></a>
                                                     <a class="btn btn-danger btn-delete" data-pk="{{j.id}}" data-toggle="modal" data-target="#modelDelete"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></a>
                                                 </div>
                                             </td>
@@ -94,15 +94,15 @@
     <script src="/static/js/app.js"></script>
     <script>
         $(".table").DataTable();
-        $(".btn-delete").click(function () {
+        $(".btn-delete").click(function() {
             var id = $(this).data('pk');
             $("#modelDelete").data('pk', id);
         });
-        $("#modelDelete").on("show.bs.modal", function () {
+        $("#modelDelete").on("show.bs.modal", function() {
             var id = $(this).data('pk');
             $(this).find(".btn-ya").data('pk', id);
         })
-        $(".btn-ya").click(function () {
+        $(".btn-ya").click(function() {
             var id = $(this).data('pk');
             $.ajax({
                 url: "/admin/setting/jadwal/" + id + "/delete",
@@ -110,9 +110,10 @@
                 cache: false,
                 processData: false,
                 contentType: "application/json",
-                success: function (res) {
+                success: function(res) {
                     window.location.reload();
-                }, error: function (res) {
+                },
+                error: function(res) {
                     console.log(res)
                 }
             })

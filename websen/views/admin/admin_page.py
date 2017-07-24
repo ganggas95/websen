@@ -672,7 +672,7 @@ def admin_change_foto(pegawai_id):
     else:
         flash(msg, category="error")
         return jsonify({"error":"Data tidak ditemukan"}), 302
-
+@login_required
 def change_password(old_pass, new_pass, pass_conf,user_id):
     user = User.query.get(user_id)
     if user.password == hashlib.md5(str(old_pass).encode('ascii')).hexdigest():
@@ -685,7 +685,7 @@ def change_password(old_pass, new_pass, pass_conf,user_id):
             return False, "Password tidak sama"
     else:    
         return False, "Password Salah"
-
+@login_required
 def change_foto(pegawai_id):
     pegawai = Pegawai.query.get(pegawai_id)
     if pegawai:
@@ -698,8 +698,8 @@ def change_foto(pegawai_id):
         fotos = (foto_src[0]).split("/")
         fotoToDel = fotos[len(fotos)-1]
         if fotoToDel:
-            os.remove(os.path.join(app.config['UPLOAD_FOLDER']+fotoToDel+"."+foto_src[1]))
-            with open(app.config['UPLOAD_FOLDER'] + filename, "wb") as fh:
+            with open(app.config['UPLOAD_FOLDER'] + filename, 'wb') as fh:
+                os.chmod(app.config['UPLOAD_FOLDER'] + filename, 664)
                 fh.write(base64.b64decode(img_data))
         
         pegawai.foto = "/static/uploads/profile/"+filename
@@ -709,7 +709,7 @@ def change_foto(pegawai_id):
         
     else:
         return False, "Gagal mengganti foto"
-
+@login_required
 def change_username(username, user):
     if username:
         user.username = username

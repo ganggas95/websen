@@ -97,8 +97,7 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="change-username" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-            aria-hidden="true">
+        <div class="modal fade" id="change-username" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
             <div class="modal-dialog modal-sm" role="document">
                 <div class="modal-content">
                     <form method="POST">
@@ -116,8 +115,7 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="change-password" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-            aria-hidden="true">
+        <div class="modal fade" id="change-password" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
             <div class="modal-dialog modal-sm" role="document">
                 <div class="modal-content">
                     <form method="POST" action="{{url_for('staff_ganti_password')}}">
@@ -147,20 +145,20 @@
     {%include "admin/footer.html"%}
     <script src="/static/js/app.js"></script>
     <script>
-        $('.img-preview').click(function () {
+        $('.img-preview').click(function() {
             $('#foto-profile').trigger('click');
         });
 
-        $('#foto-profile').change(function () {
+        $('#foto-profile').change(function() {
             $(".btn-save-profile").attr('disabled', false);
             var reader = new FileReader();
-            reader.onload = function () {
+            reader.onload = function() {
                 $('.img-preview').attr('src', reader.result);
             }
             reader.readAsDataURL(this.files[0]);
         })
 
-        $(".btn-save-profile").click(function () {
+        $(".btn-save-profile").click(function() {
             var id = $(this).data('pk');
             var source = $('.img-preview').attr('src');
             var ext = (source.split(";base64,")[0]).split("data:image/")[1];
@@ -172,14 +170,15 @@
 
             $.ajax({
                 method: "POST",
-                url: "/staff/profile/foto/" + id + "/change",
+                url: "/websen/staff/profile/foto/" + id + "/change",
                 cache: false,
                 processData: false,
                 contentType: "application/json",
                 data: JSON.stringify(dataTosend),
-                success: function (res) {
+                success: function(res) {
                     window.location.reload();
-                }, error: function (res) {
+                },
+                error: function(res) {
                     console.log(res)
                 }
             })
